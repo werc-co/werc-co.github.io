@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html class="no-js" lang="es">
+<head><meta charset="UTF-8"><script>if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}</script><script>class RocketLazyLoadScripts{constructor(e){this.triggerEvents=e,this.eventOptions={passive:!0},this.userEventListener=this.triggerListener.bind(this),this.delayedScripts={normal:[],async:[],defer:[]},this.allJQueries=[]}_addUserInteractionListener(e){this.triggerEvents.forEach((t=>window.addEventListener(t,e.userEventListener,e.eventOptions)))}_removeUserInteractionListener(e){this.triggerEvents.forEach((t=>window.removeEventListener(t,e.userEventListener,e.eventOptions)))}triggerListener(){this._removeUserInteractionListener(this),"loading"===document.readyState?document.addEventListener("DOMContentLoaded",this._loadEverythingNow.bind(this)):this._loadEverythingNow()}async _loadEverythingNow(){this._delayEventListeners(),this._delayJQueryReady(this),this._handleDocumentWrite(),this._registerAllDelayedScripts(),this._preloadAllScripts(),await this._loadScriptsFromList(this.delayedScripts.normal),await this._loadScriptsFromList(this.delayedScripts.defer),await this._loadScriptsFromList(this.delayedScripts.async),await this._triggerDOMContentLoaded(),await this._triggerWindowLoad(),window.dispatchEvent(new Event("rocket-allScriptsLoaded"))}_registerAllDelayedScripts(){document.querySelectorAll("script[type=rocketlazyloadscript]").forEach((e=>{e.hasAttribute("src")?e.hasAttribute("async")&&!1!==e.async?this.delayedScripts.async.push(e):e.hasAttribute("defer")&&!1!==e.defer||"module"===e.getAttribute("data-rocket-type")?this.delayedScripts.defer.push(e):this.delayedScripts.normal.push(e):this.delayedScripts.normal.push(e)}))}async _transformScript(e){return await this._requestAnimFrame(),new Promise((t=>{const n=document.createElement("script");let r;[...e.attributes].forEach((e=>{let t=e.nodeName;"type"!==t&&("data-rocket-type"===t&&(t="type",r=e.nodeValue),n.setAttribute(t,e.nodeValue))})),e.hasAttribute("src")?(n.addEventListener("load",t),n.addEventListener("error",t)):(n.text=e.text,t()),e.parentNode.replaceChild(n,e)}))}async _loadScriptsFromList(e){const t=e.shift();return t?(await this._transformScript(t),this._loadScriptsFromList(e)):Promise.resolve()}_preloadAllScripts(){var e=document.createDocumentFragment();[...this.delayedScripts.normal,...this.delayedScripts.defer,...this.delayedScripts.async].forEach((t=>{const n=t.getAttribute("src");if(n){const t=document.createElement("link");t.href=n,t.rel="preload",t.as="script",e.appendChild(t)}})),document.head.appendChild(e)}_delayEventListeners(){let e={};function t(t,n){!function(t){function n(n){return e[t].eventsToRewrite.indexOf(n)>=0?"rocket-"+n:n}e[t]||(e[t]={originalFunctions:{add:t.addEventListener,remove:t.removeEventListener},eventsToRewrite:[]},t.addEventListener=function(){arguments[0]=n(arguments[0]),e[t].originalFunctions.add.apply(t,arguments)},t.removeEventListener=function(){arguments[0]=n(arguments[0]),e[t].originalFunctions.remove.apply(t,arguments)})}(t),e[t].eventsToRewrite.push(n)}function n(e,t){let n=e[t];Object.defineProperty(e,t,{get:()=>n||function(){},set(r){e["rocket"+t]=n=r}})}t(document,"DOMContentLoaded"),t(window,"DOMContentLoaded"),t(window,"load"),t(window,"pageshow"),t(document,"readystatechange"),n(document,"onreadystatechange"),n(window,"onload"),n(window,"onpageshow")}_delayJQueryReady(e){let t=window.jQuery;Object.defineProperty(window,"jQuery",{get:()=>t,set(n){if(n&&n.fn&&!e.allJQueries.includes(n)){n.fn.ready=n.fn.init.prototype.ready=function(t){e.domReadyFired?t.bind(document)(n):document.addEventListener("rocket-DOMContentLoaded",(()=>t.bind(document)(n)))};const t=n.fn.on;n.fn.on=n.fn.init.prototype.on=function(){if(this[0]===window){function e(e){return e.split(" ").map((e=>"load"===e||0===e.indexOf("load.")?"rocket-jquery-load":e)).join(" ")}"string"==typeof arguments[0]||arguments[0]instanceof String?arguments[0]=e(arguments[0]):"object"==typeof arguments[0]&&Object.keys(arguments[0]).forEach((t=>{delete Object.assign(arguments[0],{[e(t)]:arguments[0][t]})[t]}))}return t.apply(this,arguments),this},e.allJQueries.push(n)}t=n}})}async _triggerDOMContentLoaded(){this.domReadyFired=!0,await this._requestAnimFrame(),document.dispatchEvent(new Event("rocket-DOMContentLoaded")),await this._requestAnimFrame(),window.dispatchEvent(new Event("rocket-DOMContentLoaded")),await this._requestAnimFrame(),document.dispatchEvent(new Event("rocket-readystatechange")),await this._requestAnimFrame(),document.rocketonreadystatechange&&document.rocketonreadystatechange()}async _triggerWindowLoad(){await this._requestAnimFrame(),window.dispatchEvent(new Event("rocket-load")),await this._requestAnimFrame(),window.rocketonload&&window.rocketonload(),await this._requestAnimFrame(),this.allJQueries.forEach((e=>e(window).trigger("rocket-jquery-load"))),window.dispatchEvent(new Event("rocket-pageshow")),await this._requestAnimFrame(),window.rocketonpageshow&&window.rocketonpageshow()}_handleDocumentWrite(){const e=new Map;document.write=document.writeln=function(t){const n=document.currentScript,r=document.createRange(),i=n.parentElement;let o=e.get(n);void 0===o&&(o=n.nextSibling,e.set(n,o));const a=document.createDocumentFragment();r.setStart(a,0),a.appendChild(r.createContextualFragment(t)),i.insertBefore(a,o)}}async _requestAnimFrame(){return new Promise((e=>requestAnimationFrame(e)))}static run(){const e=new RocketLazyLoadScripts(["keydown","mousemove","touchmove","touchstart","touchend","wheel"]);e._addUserInteractionListener(e)}}RocketLazyLoadScripts.run();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="profile" href="https://gmpg.org/xfn/11" />
+<link rel="pingback" href="https://www.#/xmlrpc.php" />
+
+<title>Comida típica de Colombia: recetas colombianas - Viviendo Cali</title><style id="rocket-critical-css">:root{--wp-admin-theme-color:#007cba;--wp-admin-theme-color-darker-10:#006ba1;--wp-admin-theme-color-darker-20:#005a87}html,body,div,span,h1,h4,p,a,img,ins,i,ul,li,form,label,article,aside,figure,header,nav{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,figure,header,nav{display:block}ul{list-style:none}html{font-size:100%;-ms-text-size-adjust:none;-webkit-text-size-adjust:none}body{font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:14px;font-size:0.875rem;line-height:1.6;background:#f7f7f7;word-wrap:break-word}.mh-container,.mh-container-inner{width:100%;max-width:1080px;margin:0 auto;position:relative}.mh-container-outer{margin:25px auto;-webkit-box-shadow:0px 0px 10px rgba(50,50,50,0.17);-moz-box-shadow:0px 0px 10px rgba(50,50,50,0.17);box-shadow:0px 0px 10px rgba(50,50,50,0.17)}.mh-wrapper{padding:25px;background:#fff}.mh-content{width:65.83%;overflow:hidden}.mh-sidebar{width:31.66%;float:left}.mh-right-sb #main-content{float:left;margin-right:2.5%}.clearfix{display:block}.clearfix:after{content:".";display:block;clear:both;visibility:hidden;line-height:0;height:0;margin:0;padding:0}h1{font-size:32px;font-size:2rem}h4{font-size:18px;font-size:1.125rem}h1,h4{font-family:'Open Sans',Helvetica,Arial,sans-serif;color:#000;line-height:1.3;font-weight:700}i{font-style:italic}a{color:#000;text-decoration:none}.mh-header{background:#fff}.mh-site-logo{padding:0}.mh-main-nav-wrap{background:#2a2a2a}.mh-main-nav{text-transform:uppercase;border-bottom:5px solid #009300}.mh-main-nav li{float:left;position:relative;font-weight:700}.mh-main-nav li a{display:block;color:#fff;padding:10px 20px;border-left:1px solid rgba(255,255,255,0.1)}.mh-main-nav li:first-child a,.mh-main-nav .sub-menu li a{border:none}.mh-main-nav ul ul{display:none;position:absolute}.mh-main-nav ul ul li{width:16em}.entry-header{margin-bottom:20px;margin-bottom:1.25rem}.mh-meta{font-size:13px;font-size:0.8125rem}.mh-meta,.mh-meta a{color:#979797}.mh-meta span{margin-right:10px}.mh-meta .fa{margin-right:5px}.entry-meta{margin-top:10px;margin-top:0.625rem;padding:5px 10px;border-top:1px dotted #ebebeb;border-bottom:1px dotted #ebebeb}.entry-meta a{font-weight:700}.entry-thumbnail{max-width:1030px;margin-bottom:20px;margin-bottom:1.25rem}.entry-thumbnail img{width:100%}.entry-content p{margin-bottom:20px;margin-bottom:1.25rem}.entry-content a{font-weight:600;color:#009300}img{max-width:100%;width:auto\9;height:auto;vertical-align:bottom}.screen-reader-text{position:absolute;top:-9999rem;left:-9999rem;overflow:hidden}#respond a{color:#000}#respond #cancel-comment-reply-link{font-size:12px;font-size:0.75rem;color:#fff;padding:5px 10px;background:#009300}input{font-size:12px;font-size:0.75rem;padding:5px;border:1px solid #d7d8d8}input[type=submit]{display:inline-block;min-width:100px;font-weight:700;color:#fff;padding:10px 15px;background:#009300;text-transform:uppercase;border:0;-webkit-appearance:none}.search-form input{font-size:11px;line-height:1;color:#1f1e1e;text-transform:uppercase}.search-form .search-submit{display:none}.search-form .screen-reader-text{position:absolute;left:-9999px;overflow:hidden}.search-form .search-field{position:relative;padding:10px;margin:0;border:1px solid #ebebeb;background:#fff;-webkit-appearance:none;-webkit-border-radius:0;border-radius:0}.mh-widget .search-form{display:block;margin:0 auto;padding:5%;background:#f5f5f5}.mh-widget .search-form .search-field{display:block;margin:0 auto;width:90%}.mh-widget{margin-bottom:25px;overflow:hidden}.mh-widget-title{font-size:16px;font-size:1rem;padding-bottom:5px;margin-bottom:20px;margin-bottom:1.25rem;text-transform:uppercase;border-bottom:3px solid #009300}.widget_categories li{border-bottom:1px dotted #ebebeb}.widget_categories li a{display:block;padding:5px 0}.widget_categories li:first-child a{padding-top:0}.widget_recent_entries li{display:block;padding:5px 0;border-bottom:1px dotted #e5e5e5}.widget_recent_entries li:first-child{padding-top:0}.widget_recent_entries .post-date{display:block;font-size:11px;font-size:0.6875rem;color:#979797;margin-bottom:5px}@media screen and (max-width:1475px){.mh-container{width:95%}.mh-container-inner{width:100%}}@media screen and (max-width:1120px){.mh-main-nav li{font-size:12px}.mh-main-nav li a{padding:10px 15px}}@media screen and (max-width:900px){.mh-container-outer{margin:0 auto}#mh-mobile .mh-container{width:100%}.mh-wrapper,.mh-site-logo{padding:20px}.mh-widget{margin-bottom:20px}}@media screen and (max-width:767px){.mh-custom-header,.mh-content,.mh-sidebar,.mh-right-sb #main-content{float:none;width:100%;margin:0}.mh-header{border-bottom:2px solid #ebebeb}.mh-site-logo{text-align:center}.entry-title{font-size:24px;font-size:1.5rem}.mh-sidebar{margin-top:20px}.entry-meta{padding:5px 0}}@media screen and (max-width:620px){.entry-meta-categories,.entry-meta-comments{display:none}}</style><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Open%20Sans%3A400%2C400italic%2C700%2C600&#038;display=swap" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open%20Sans%3A400%2C400italic%2C700%2C600&#038;display=swap" media="print" onload="this.media='all'" /><noscript><link rel="preload" href="https://fonts.googleapis.com/css?family=Open%20Sans%3A400%2C400italic%2C700%2C600&#038;display=swap" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" /></noscript><link rel="preload" href="cache/min/1/3971a9c68f23e9cfd725ee4cad5f2bc7.css" data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" media="all" data-minify="1" />
+<meta name="description" content="La comida típica de Colombia y las recetas colombianas están en auge y cada vez más de moda en otros países europeos y americanos." />
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+<link rel="canonical" href="index.html" />
+<meta property="og:locale" content="es_ES" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Comida típica de Colombia: recetas colombianas - Viviendo Cali" />
+<meta property="og:description" content="La comida típica de Colombia y las recetas colombianas están en auge y cada vez más de moda en otros países europeos y americanos." />
+<meta property="og:url" content="https://www.#/comida-tipica-de-colombia-recetas-colombianas/" />
+<meta property="og:site_name" content="Viviendo Cali" />
+<meta property="article:publisher" content="https://www.facebook.com/viviendocali/" />
+<meta property="article:author" content="https://www.facebook.com/viviendocali/" />
+<meta property="article:published_time" content="2019-06-27T23:34:38+00:00" />
+<meta property="article:modified_time" content="2019-06-27T23:34:38+00:00" />
+<meta property="og:image" content="https://www.#/wp-content/uploads/2016/10/bandeja-paisa-2.jpg" />
+<meta name="twitter:label1" content="Escrito por">
+<meta name="twitter:data1" content="Marta D">
+<meta name="twitter:label2" content="Tiempo de lectura">
+<meta name="twitter:data2" content="7 minutos">
+<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.#/#organization","name":"ViviendoCali","url":"https://www.#/","sameAs":["https://www.facebook.com/viviendocali/","https://twitter.com/Viviendo_Cali"],"logo":{"@type":"ImageObject","@id":"https://www.#/#logo","inLanguage":"es","url":"https://www.#/wp-content/uploads/2020/06/Logo-Viviendocali-1.jpg","width":120,"height":120,"caption":"ViviendoCali"},"image":{"@id":"https://www.#/#logo"}},{"@type":"WebSite","@id":"https://www.#/#website","url":"https://www.#/","name":"Viviendo Cali","description":"Cali, Bogot\u00e1, Medell\u00edn y Colombia","publisher":{"@id":"https://www.#/#organization"},"potentialAction":[{"@type":"SearchAction","target":"https://www.#/?s={search_term_string}","query-input":"required name=search_term_string"}],"inLanguage":"es"},{"@type":"ImageObject","@id":"https://www.#/comida-tipica-de-colombia-recetas-colombianas/#primaryimage","inLanguage":"es","url":"https://www.#/wp-content/uploads/2016/10/bandeja-paisa-2.jpg","width":600,"height":399,"caption":"Comida t\u00edpica de Colombia bandeja paisa"},{"@type":"WebPage","@id":"https://www.#/comida-tipica-de-colombia-recetas-colombianas/#webpage","url":"https://www.#/comida-tipica-de-colombia-recetas-colombianas/","name":"Comida t\u00edpica de Colombia: recetas colombianas - Viviendo Cali","isPartOf":{"@id":"https://www.#/#website"},"primaryImageOfPage":{"@id":"https://www.#/comida-tipica-de-colombia-recetas-colombianas/#primaryimage"},"datePublished":"2019-06-27T23:34:38+00:00","dateModified":"2019-06-27T23:34:38+00:00","description":"La comida t\u00edpica de Colombia y las recetas colombianas est\u00e1n en auge y cada vez m\u00e1s de moda en otros pa\u00edses europeos y americanos.","breadcrumb":{"@id":"https://www.#/comida-tipica-de-colombia-recetas-colombianas/#breadcrumb"},"inLanguage":"es","potentialAction":[{"@type":"ReadAction","target":["https://www.#/comida-tipica-de-colombia-recetas-colombianas/"]}]},{"@type":"BreadcrumbList","@id":"https://www.#/comida-tipica-de-colombia-recetas-colombianas/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"WebPage","@id":"https://www.#/","url":"https://www.#/","name":"Portada"}},{"@type":"ListItem","position":2,"item":{"@type":"WebPage","@id":"https://www.#/comida-tipica-de-colombia-recetas-colombianas/","url":"https://www.#/comida-tipica-de-colombia-recetas-colombianas/","name":"Comida t\u00edpica de Colombia: recetas colombianas"}}]},{"@type":"Article","@id":"https://www.#/comida-tipica-de-colombia-recetas-colombianas/#article","isPartOf":{"@id":"https://www.#/comida-tipica-de-colombia-recetas-colombianas/#webpage"},"author":{"@id":"https://www.#/#/schema/person/a84b55bf3af225e45aaa79cd8613bff0"},"headline":"Comida t\u00edpica de Colombia: recetas colombianas","datePublished":"2019-06-27T23:34:38+00:00","dateModified":"2019-06-27T23:34:38+00:00","mainEntityOfPage":{"@id":"https://www.#/comida-tipica-de-colombia-recetas-colombianas/#webpage"},"commentCount":1,"publisher":{"@id":"https://www.#/#organization"},"image":{"@id":"https://www.#/comida-tipica-de-colombia-recetas-colombianas/#primaryimage"},"keywords":"cocina colombiana","articleSection":"Gastronom\u00eda","inLanguage":"es"},{"@type":"Person","@id":"https://www.#/#/schema/person/a84b55bf3af225e45aaa79cd8613bff0","name":"Marta D","image":{"@type":"ImageObject","@id":"https://www.#/#personlogo","inLanguage":"es","url":"https://secure.gravatar.com/avatar/3b51da52e7e53108ee01a3b0165ed78e?s=96&d=mm&r=g","caption":"Marta D"},"description":"Comunicadora social y redactora en #. Tras varios a\u00f1os en una sucursal bancaria, mont\u00e9 la oficina en casa y redacto contenidos para diversas webs","sameAs":["https://www.#","https://www.facebook.com/viviendocali/","https://twitter.com/Viviendo_Cali"]}]}</script>
+
+<link rel='dns-prefetch' href='https://fonts.googleapis.com/' />
+<link rel='dns-prefetch' href='https://pagead2.googlesyndication.com/' />
+<link rel='dns-prefetch' href='https://tpc.googlesyndication.com/' />
+<link rel='dns-prefetch' href='https://www.googletagservices.com/' />
+<link rel='dns-prefetch' href='https://quantcast.mgr.consensu.org/' />
+<link rel='dns-prefetch' href='https://fonts.gstatic.com/' />
+<link rel='dns-prefetch' href='https://secure.quantserve.com/' />
+<link href='https://fonts.gstatic.com' crossorigin rel='preconnect' />
+<link rel="alternate" type="application/rss+xml" title="Viviendo Cali &raquo; Feed" href="https://www.#/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Viviendo Cali &raquo; Feed de los comentarios" href="https://www.#/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Viviendo Cali &raquo; Comentario Comida típica de Colombia: recetas colombianas del feed" href="feed/index.html" />
+<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<style id='rocket-lazyload-inline-css' type='text/css'>
+.rll-youtube-player{position:relative;padding-bottom:56.23%;height:0;overflow:hidden;max-width:100%;}.rll-youtube-player iframe{position:absolute;top:0;left:0;width:100%;height:100%;z-index:100;background:0 0}.rll-youtube-player img{bottom:0;display:block;left:0;margin:auto;max-width:100%;width:100%;position:absolute;right:0;top:0;border:none;height:auto;cursor:pointer;-webkit-transition:.4s all;-moz-transition:.4s all;transition:.4s all}.rll-youtube-player img:hover{-webkit-filter:brightness(75%)}.rll-youtube-player .play{height:72px;width:72px;left:50%;top:50%;margin-left:-36px;margin-top:-36px;position:absolute;background:url(plugins/wp-rocket/assets/img/youtube.png) no-repeat;cursor:pointer}
+</style>
+<script type='text/javascript' src='js/jquery/jquery.js@ver=1.12.4-wp' id='jquery-core-js'></script>
+<script type='text/javascript' id='hide-wp-toolbar-script-js-extra'>
+/* <![CDATA[ */
+var HWPTB = {"ajaxurl":"https:\/\/www.#\/wp-admin\/admin-ajax.php","HWPTBnonce":"cfd631d3d2","hide_wp_toolbar":"false"};
+/* ]]> */
+</script>
+<script data-minify="1" type='text/javascript' src='cache/min/1/wp-content/plugins/hide-wp-toolbar/script.js@ver=1621429569' id='hide-wp-toolbar-script-js' defer></script>
+<script data-minify="1" type='text/javascript' src='cache/min/1/wp-content/themes/mh-magazine-lite/js/scripts.js@ver=1621429569' id='mh-scripts-js' defer></script>
+<link rel="https://api.w.org/" href="https://www.#/wp-json/" /><link rel="alternate" type="application/json" href="https://www.#/wp-json/wp/v2/posts/1407" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.#/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.#/wp-includes/wlwmanifest.xml" />
+<meta name="generator" content="WordPress 5.5.6" />
+<link rel='shortlink' href='https://www.#/?p=1407' />
+<link rel="alternate" type="application/json+oembed" href="https://www.#/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.#%2Fcomida-tipica-de-colombia-recetas-colombianas%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.#/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.#%2Fcomida-tipica-de-colombia-recetas-colombianas%2F&#038;format=xml" />
+<style id="wplmi-inline-css" type="text/css"> span.wplmi-user-avatar { width: 16px;display: inline-block !important;flex-shrink: 0; } img.wplmi-elementor-avatar { border-radius: 100%;margin-right: 3px; } 
+
+</style>
+<link rel="preload" as="font" href="themes/mh-magazine-lite/fonts/fontawesome-webfont.woff2@v=4.5.0" crossorigin><!--[if lt IE 9]>
+<script src="https://www.#/wp-content/themes/mh-magazine-lite/js/css3-mediaqueries.js"></script>
+<![endif]-->
+<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style><style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #8da6bc; }
+</style>
+<link rel="icon" href="https://www.#/wp-content/uploads/2016/06/icono.png" sizes="32x32" />
+<link rel="icon" href="https://www.#/wp-content/uploads/2016/06/icono.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://www.#/wp-content/uploads/2016/06/icono.png" />
+<meta name="msapplication-TileImage" content="https://www.#/wp-content/uploads/2016/06/icono.png" />
+<noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript><script type="rocketlazyloadscript">
+/*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
+(function(w){"use strict";if(!w.loadCSS){w.loadCSS=function(){}}
+var rp=loadCSS.relpreload={};rp.support=(function(){var ret;try{ret=w.document.createElement("link").relList.supports("preload")}catch(e){ret=!1}
+return function(){return ret}})();rp.bindMediaToggle=function(link){var finalMedia=link.media||"all";function enableStylesheet(){link.media=finalMedia}
+if(link.addEventListener){link.addEventListener("load",enableStylesheet)}else if(link.attachEvent){link.attachEvent("onload",enableStylesheet)}
+setTimeout(function(){link.rel="stylesheet";link.media="only x"});setTimeout(enableStylesheet,3000)};rp.poly=function(){if(rp.support()){return}
+var links=w.document.getElementsByTagName("link");for(var i=0;i<links.length;i++){var link=links[i];if(link.rel==="preload"&&link.getAttribute("as")==="style"&&!link.getAttribute("data-loadcss")){link.setAttribute("data-loadcss",!0);rp.bindMediaToggle(link)}}};if(!rp.support()){rp.poly();var run=w.setInterval(rp.poly,500);if(w.addEventListener){w.addEventListener("load",function(){rp.poly();w.clearInterval(run)})}else if(w.attachEvent){w.attachEvent("onload",function(){rp.poly();w.clearInterval(run)})}}
+if(typeof exports!=="undefined"){exports.loadCSS=loadCSS}
+else{w.loadCSS=loadCSS}}(typeof global!=="undefined"?global:this))
+</script>
+<script type="rocketlazyloadscript" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script type="rocketlazyloadscript">(adsbygoogle=window.adsbygoogle||[]).pauseAdRequests=1;</script>
+<script type="rocketlazyloadscript">
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-7916202783210165",
+    enable_page_level_ads: true
+  });
+</script>
+<meta name="google-site-verification" content="1FiDxhGwRgXn-SYEJY7m3U2D7cOiYzZG5O2QwcrjJ_M" />
+<meta name='B-verify' content='b6bc3e15c7113c220da50654ec329cabe24dc1ec' />
+<script data-minify="1" async='async' src='cache/min/1/tag/js/gpt.js@ver=1621429569'></script>
+<script type="rocketlazyloadscript">
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+<meta name="google-site-verification" content="1FiDxhGwRgXn-SYEJY7m3U2D7cOiYzZG5O2QwcrjJ_M" />
+<meta name="publisuites-verify-code" content="aHR0cHM6Ly93d3cudml2aWVuZG9jYWxpLmNvbS8=" />
+<meta name='dmca-site-verification' content='a1VxTjlrYXZUNzFRMEhUaENhZGphZ0llWGhaL1U4S2M0MXlieXpDRTRiND01' />
+
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" async=true>
+(function() {
+  var host = window.location.hostname;
+  var element = document.createElement('script');
+  var firstScript = document.getElementsByTagName('script')[0];
+  var url = 'https://quantcast.mgr.consensu.org'
+    .concat('/choice/', 'hjMWED_N1aZSr', '/', host, '/choice.js')
+  var uspTries = 0;
+  var uspTriesLimit = 3;
+  element.async = true;
+  element.type = 'text/javascript';
+  element.src = url;
+
+  firstScript.parentNode.insertBefore(element, firstScript);
+
+  function makeStub() {
+    var TCF_LOCATOR_NAME = '__tcfapiLocator';
+    var queue = [];
+    var win = window;
+    var cmpFrame;
+
+    function addFrame() {
+      var doc = win.document;
+      var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);
+
+      if (!otherCMP) {
+        if (doc.body) {
+          var iframe = doc.createElement('iframe');
+
+          iframe.style.cssText = 'display:none';
+          iframe.name = TCF_LOCATOR_NAME;
+          doc.body.appendChild(iframe);
+        } else {
+          setTimeout(addFrame, 5);
+        }
+      }
+      return !otherCMP;
+    }
+
+    function tcfAPIHandler() {
+      var gdprApplies;
+      var args = arguments;
+
+      if (!args.length) {
+        return queue;
+      } else if (args[0] === 'setGdprApplies') {
+        if (
+          args.length > 3 &&
+          args[2] === 2 &&
+          typeof args[3] === 'boolean'
+        ) {
+          gdprApplies = args[3];
+          if (typeof args[2] === 'function') {
+            args[2]('set', true);
+          }
+        }
+      } else if (args[0] === 'ping') {
+        var retr = {
+          gdprApplies: gdprApplies,
+          cmpLoaded: false,
+          cmpStatus: 'stub'
+        };
+
+        if (typeof args[2] === 'function') {
+          args[2](retr);
+        }
+      } else {
+        queue.push(args);
+      }
+    }
+
+    function postMessageEventHandler(event) {
+      var msgIsString = typeof event.data === 'string';
+      var json = {};
+
+      try {
+        if (msgIsString) {
+          json = JSON.parse(event.data);
+        } else {
+          json = event.data;
+        }
+      } catch (ignore) {}
+
+      var payload = json.__tcfapiCall;
+
+      if (payload) {
+        window.__tcfapi(
+          payload.command,
+          payload.version,
+          function(retValue, success) {
+            var returnMsg = {
+              __tcfapiReturn: {
+                returnValue: retValue,
+                success: success,
+                callId: payload.callId
+              }
+            };
+            if (msgIsString) {
+              returnMsg = JSON.stringify(returnMsg);
+            }
+            event.source.postMessage(returnMsg, '*');
+          },
+          payload.parameter
+        );
+      }
+    }
+
+    while (win) {
+      try {
+        if (win.frames[TCF_LOCATOR_NAME]) {
+          cmpFrame = win;
+          break;
+        }
+      } catch (ignore) {}
+
+      if (win === window.top) {
+        break;
+      }
+      win = win.parent;
+    }
+    if (!cmpFrame) {
+      addFrame();
+      win.__tcfapi = tcfAPIHandler;
+      win.addEventListener('message', postMessageEventHandler, false);
+    }
+  };
+
+  makeStub();
+
+  var uspStubFunction = function() {
+    var arg = arguments;
+    if (typeof window.__uspapi !== uspStubFunction) {
+      setTimeout(function() {
+        if (typeof window.__uspapi !== 'undefined') {
+          window.__uspapi.apply(window.__uspapi, arg);
+        }
+      }, 500);
+    }
+  };
+
+  var checkIfUspIsReady = function() {
+    uspTries++;
+    if (window.__uspapi === uspStubFunction && uspTries < uspTriesLimit) {
+      console.warn('USP is not accessible');
+    } else {
+      clearInterval(uspInterval);
+    }
+  };
+
+  if (typeof window.__uspapi === 'undefined') {
+    window.__uspapi = uspStubFunction;
+    var uspInterval = setInterval(checkIfUspIsReady, 6000);
+  }
+})();
+</script>
+
+<script type="rocketlazyloadscript">
+	const showAds = () => {
+		(adsbygoogle=window.adsbygoogle||[]).pauseAdRequests=0;
+        googletag.cmd.push(function(){
+			googletag.pubads().refresh();
+		});
+	};
+	const showNPAds = () => {
+		(adsbygoogle=window.adsbygoogle||[]).requestNonPersonalizedAds=1;
+		(adsbygoogle=window.adsbygoogle||[]).pauseAdRequests=0;
+		googletag.cmd.push(function(){
+			googletag.pubads().setRequestNonPersonalizedAds(1);
+			googletag.pubads().refresh();
+		});
+	};
+	var cnt = 0;
+    var consentSetInterval = setInterval(function(){
+      cnt += 1;
+      // finaliza si no hemos tenido consentimiento durante 60 segs
+      if( cnt === 600 )
+        clearInterval(consentSetInterval);
+
+      if( typeof window.__tcfapi !== 'undefined' ) { // Check if window._tcfapi has been set
+        clearInterval( consentSetInterval );
+        __tcfapi('addEventListener', 2, function(tcData,listenerSuccess){
+          if (listenerSuccess) {
+          	if (tcData){
+          		console.log(tcData.eventStatus);
+                if(tcData.eventStatus === 'tcloaded' || tcData.eventStatus === 'useractioncomplete' ) {
+                  if (!tcData.gdprApplies ) {
+                  	console.log("GDPR doesn't Applies");
+	                 showAds();
+                  }
+                  else {
+                    // GDPR DOES APPLY
+                    console.log("GDPR does apply");
+
+                    var hasGoogleAdvertisingProductsConsent = tcData.vendor.consents[755] || false;
+	                      // Check if the user gave Google Advertising Products consent (iab vendor 755)
+
+                  	if(hasGoogleAdvertisingProductsConsent) {
+                      showAds();
+                    
+                  	}else{
+	                  showNPAds();
+                  	}
+                
+                  }
+                }
+        	}
+        	else{
+              showNPAds();
+        	}
+          }
+        } );
+      }
+      cnt++;
+    }, 100);
+</script>
+</head>
+<body id="mh-mobile" class="post-template-default single single-post postid-1407 single-format-standard custom-background mh-right-sb">
+<div class="mh-container mh-container-outer">
+<div class="mh-header-mobile-nav clearfix"></div>
+<header class="mh-header">
+<div class="mh-container mh-container-inner mh-row clearfix">
+<div class="mh-custom-header" role="banner">
+<a href="https://www.#/" title="Viviendo Cali" rel="home">
+<div class="mh-site-logo" role="banner">
+</div>
+</a>
+</div>
+</div>
+<div class="mh-main-nav-wrap">
+<nav class="mh-main-nav mh-container mh-container-inner clearfix">
+<div class="menu-menu-principal-container"><ul id="menu-menu-principal" class="menu"><li id="menu-item-442" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-442"><a href="https://www.#/">Inicio</a></li>
+<li id="menu-item-649" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-649"><a href="https://www.#/category/cali/">Cali</a></li>
+<li id="menu-item-4865" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4865"><a href="https://www.#/category/bogota/">Bogotá</a></li>
+<li id="menu-item-4866" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4866"><a href="https://www.#/category/medellin/">Medellín</a></li>
+<li id="menu-item-650" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-650"><a href="https://www.#/category/colombia/">Colombia</a></li>
+<li id="menu-item-462" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-462"><a href="https://www.#/contacto/">Contáctenos</a></li>
+<li id="menu-item-645" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-645"><a href="https://www.#/category/eventos/">Eventos</a></li>
+<li id="menu-item-646" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-646"><a href="https://www.#/category/gastronomia/">Gastronomía</a></li>
+<li id="menu-item-461" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-461"><a href="https://www.#/nosotros/">Sobre nosotros</a>
+<ul class="sub-menu">
+<li id="menu-item-510" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-510"><a href="https://www.#/cali/">Historia de Cali</a></li>
+</ul>
+</li>
+</ul></div> </nav>
+</div>
+<meta name="google-site-verification" content="1FiDxhGwRgXn-SYEJY7m3U2D7cOiYzZG5O2QwcrjJ_M" />
+</header>
+<div class="mh-wrapper clearfix">
+<div id="main-content" class="mh-content"><article id="post-1407" class="post-1407 post type-post status-publish format-standard hentry category-gastronomia tag-cocina-colombiana">
+<header class="entry-header clearfix">
+<h1 class="entry-title">
+ Comida típica de Colombia: recetas colombianas </h1>
+<p class="mh-meta entry-meta">
+<span class="entry-meta-date updated"><i class="fa fa-clock-o"></i><a href="https://www.#/2016/10/">2 octubre, 2016</a></span>
+<span class="entry-meta-author author vcard"><i class="fa fa-user"></i><a class="fn" href="https://www.#/author/admin/">Marta D</a></span>
+<span class="entry-meta-categories"><i class="fa fa-folder-open-o"></i><a href="https://www.#/category/gastronomia/" rel="category tag">Gastronomía</a></span>
+<span class="entry-meta-comments"><i class="fa fa-comment-o"></i><a class="mh-comment-scroll" href="index.html#mh-comments">1</a></span>
+</p>
+</header>
+<div class="entry-content clearfix">
+<div class="adsb30" style=" margin:12px; text-align:center"><script type="rocketlazyloadscript" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7916202783210165" data-ad-slot="3011204862" data-ad-format="link" data-full-width-responsive="true"></ins>
+<script type="rocketlazyloadscript">
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><p class="post-modified-info">Last Updated on 28 junio, 2019 by <a href="https://www.#" target="_blank" class="last-modified-author">Marta D</a></p>
+<p><strong>La comida típica de Colombia y las recetas colombianas están en auge y cada vez más de moda en&nbsp;otros países europeos y americanos.</strong></p><div class="adsb30" style=" margin:10px; margin-left:0px; text-align:left"><script type="rocketlazyloadscript" data-rocket-type="text/javascript">
+    google_ad_client = "ca-pub-7916202783210165";
+    google_ad_slot = "7661428843";
+    google_ad_width = 336;
+    google_ad_height = 280;
+</script>
+
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://pagead2.googlesyndication.com/pagead/show_ads.js" defer>
+</script></div>
+<div id="toc_container" class="no_bullets"><p class="toc_title">Contents</p><ul class="toc_list"><li><a href="index.html#Comida_tipica_de_Colombia_8211_Bandeja_Paisa"><span class="toc_number toc_depth_1">1</span> Comida típica de Colombia &#8211; Bandeja Paisa</a></li><li><a href="index.html#Comida_tipica_de_Colombia_8211_Sancocho_de_Gallina"><span class="toc_number toc_depth_1">2</span> Comida típica de Colombia &#8211; Sancocho de Gallina</a></li><li><a href="index.html#Comida_tipica_de_Colombia_8211_Ajiaco_Santafereno"><span class="toc_number toc_depth_1">3</span> Comida típica de Colombia &#8211; Ajiaco Santafereño</a></li><li><a href="index.html#Arroz_Atollado"><span class="toc_number toc_depth_1">4</span> Arroz Atollado</a></li><li><a href="index.html#Sopa_de_Mondongo"><span class="toc_number toc_depth_1">5</span> Sopa de Mondongo</a></li><li><a href="index.html#Comida_tipica_de_Colombia_8211_Ceviche_de_camarones"><span class="toc_number toc_depth_1">6</span> Comida típica de Colombia &#8211; Ceviche de camarones</a></li><li><a href="index.html#Tamales_colombianos"><span class="toc_number toc_depth_1">7</span> Tamales colombianos</a></li><li><a href="index.html#Empanadas"><span class="toc_number toc_depth_1">8</span> Empanadas</a></li><li><a href="index.html#Comida_tipica_de_Colombia_8211_Posta_Negra"><span class="toc_number toc_depth_1">9</span> Comida típica de Colombia &#8211; Posta Negra</a></li><li><a href="index.html#Comida_tipica_de_Colombia_8211_Arroz_con_Coco"><span class="toc_number toc_depth_1">10</span> Comida típica de Colombia &#8211; Arroz con Coco</a></li><li><a href="index.html#Arepas"><span class="toc_number toc_depth_1">11</span> Arepas</a></li><li><a href="index.html#Almojabanas_colombianas"><span class="toc_number toc_depth_1">12</span> Almojábanas colombianas</a></li><li><a href="index.html#Manjar_blanco"><span class="toc_number toc_depth_1">13</span> Manjar blanco</a></li></ul></div>
+<p style="text-align: justify;">La gastronomía colombiana es una fusión de la herencia indígena, de la influencia española y de las costumbres de la comunidad afrocolombiana asentada en el país. La mezcla, combinada con la riqueza en ingredientes exóticos, hacen que&nbsp;la cocina colombiana sea, al igual que ocurre con la gastrononía de países vecinos como Perú, única al paladar.</p>
+<p>La gastronomía colombiana es muy amplia y variada. Por lo que hacemos una selección con los platos más representativos de&nbsp;la comida típica de Colombia:</p>
+<h2 style="text-align: justify;"><span id="Comida_tipica_de_Colombia_8211_Bandeja_Paisa">Comida típica de Colombia &#8211; Bandeja Paisa</span></h2>
+<p><img loading="lazy" class="aligncenter wp-image-1409 size-full" src="uploads/2016/10/bandeja-paisa-2.jpg" alt="Comida típica de Colombia bandeja paisa" width="600" height="399"></p>
+<p style="text-align: justify;">Considerado para muchos colombianos el plato nacional. La bandeja paisa es un plato de grandes dimensiones (por eso lo de bandeja) compuesto por ingredientes como chorizo, arroz, aguacate, plátano, frijoles, carne, panceta, tomate y huevos.</p>
+<p style="text-align: justify;">Es originario de la región paísa, donde se encuentra Medellín, y el eje cafetero.&nbsp;Y&nbsp;es el alimento que acompañaba al arriero en sus travesías. Un plato muy completo, aunque algo pesado, que reunía todo lo necesario para que el arriero aguantara largas jornadas de viaje. A día de hoy se ha extendido completamente por toda la cocina colombiana y se puede encontrar en casi todos los restaurantes del país.</p><div class="adsb30" style=" margin:12px; margin-left:0px; text-align:left"><script type="rocketlazyloadscript" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle" style="display:inline-block;width:300px;height:600px" data-ad-client="ca-pub-7916202783210165" data-ad-slot="3270416441"></ins>
+<script type="rocketlazyloadscript">
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+<p style="text-align: justify;">Ver la <a href="https://www.#/receta-bandeja-paisa/">receta de la Bandeja Paisa</a></p>
+<h2 style="text-align: justify;"><span id="Comida_tipica_de_Colombia_8211_Sancocho_de_Gallina">Comida típica de Colombia &#8211; Sancocho de Gallina</span></h2>
+<p><img loading="lazy" class="aligncenter wp-image-1410 size-full" src="uploads/2016/10/sancocho-de-gallina-2.jpg" alt="Comida típica de Colombia sancocho de gallina" width="600" height="450" srcset="https://www.#/wp-content/uploads/2016/10/sancocho-de-gallina-2.jpg 600w, https://www.#/wp-content/uploads/2016/10/sancocho-de-gallina-2-326x245.jpg 326w, https://www.#/wp-content/uploads/2016/10/sancocho-de-gallina-2-80x60.jpg 80w" sizes="(max-width: 600px) 100vw, 600px" /></p>
+<p style="text-align: justify;">Si hay un plato que compite en popularidad con la Bandeja Paisa, ese es el Sancocho de Gallina. También es un plato fuerte, que cuenta entre sus ingredientes con pollo, mazorcas de maíz, plátanos, papas y yucas. Se suele servir en dos recipientes, por un lado la sopa y por otro el pollo con los tropezones grandes, aunque también puede tomarse junto.</p>
+<p style="text-align: justify;">Es originario del Valle del Cauca (Cali) y es protagonista entre la&nbsp;comida típica de Colombia. Aunque existen variantes del mismo utilizando pescado o carne, el más extendido por Colombia es el valluno, hecho a base de gallina o pollo.</p>
+<p style="text-align: justify;">Ver la <a href="https://www.#/receta-sancocho-de-gallina-valluno/">receta del Sancocho de Gallina</a></p>
+<h2 style="text-align: justify;"><span id="Comida_tipica_de_Colombia_8211_Ajiaco_Santafereno">Comida típica de Colombia &#8211; Ajiaco Santafereño</span></h2>
+<p><img loading="lazy" class="aligncenter wp-image-1411 size-full" src="uploads/2016/10/ajiaco-bogotano-2.jpg" alt="recetas colombianas ajiaco bogotano" width="600" height="391"></p>
+<p style="text-align: justify;">Y el tercero en el podio es el Ajiaco Bogotano o Santafereño, junto con el Sancocho la sopa más típica de Colombia. Es muy parecido al Sancocho, solo que lleva tres tipos de papa y no yuca, y la mitad de las papas se deshace en la sopa para que quede más espesa.</p>
+<p style="text-align: justify;">Este plato es típico de Bogotá. Veremos que en otros países llaman Ajiaco a lo que en Colombia es el Sancocho y viceversa. Realmente son dos sopas muy sabrosas y de gran parecido.</p>
+<p style="text-align: justify;">Ver la <a href="https://www.#/receta-ajiaco-santafereno/">receta del Ajiaco Santafereño o Ajiaco Bogotano</a></p>
+<h2 style="text-align: justify;"><span id="Arroz_Atollado">Arroz Atollado</span></h2>
+<p><img loading="lazy" class="aligncenter wp-image-359 size-full" src="uploads/2016/06/arroz-atollado-valluno.jpg" alt="arroz atollado" width="640" height="337"></p>
+<p style="text-align: justify;">Y seguimos con los platos fuertes de lacomida típica de Colombia. El concepto es similar a la paella española, un arroz con múltiples ingredientes hasta conseguir un plato contundente. Tradicionalmente lleva costillas de cerdo, tocino, pechuga de pollo y longaniza parrillera. Así que básicamente lleva carne.</p>
+<p style="text-align: justify;">En cada región colombiana varían ligeramente la receta, aunque sus orígenes o su tradición están más ligados a la cocina vallecaucana (Cali).</p>
+<p style="text-align: justify;">Ver la <a href="https://www.#/receta-arroz-atollado/">receta del Arroz Atollado</a></p>
+<h2 style="text-align: justify;"><span id="Sopa_de_Mondongo">Sopa de Mondongo</span></h2>
+<p><img loading="lazy" class="aligncenter wp-image-1412 size-full" src="uploads/2016/10/sopa-de-mondongo-2.jpg" alt="recetas colombianas sopa de mondongo" width="600" height="337"></p>
+<p style="text-align: justify;">Otra de las <a href="https://www.#/sopas-colombianas-populares/">sopas más típicas de la cocina colombiana</a>. El mondongo son las tripas de distintos animales y es el ingrediente principal de esta sopa a la que también se acompaña con otras piezas de carne, principalmente de cerdo. Un plato muy similar a los famosos callos españoles.</p>
+<p style="text-align: justify;">Es una&nbsp;comida típica de Colombia muy presente&nbsp;en la costa caribe (&nbsp;Barranquilla), Antioquia ( Medellín) o el Altiplano ( Bogotá). Aunque se puede encontrar en cualquier lugar del país con mucha facilidad.</p>
+<p style="text-align: justify;">Ver la <a href="https://www.#/receta-sopa-de-mondongo/">receta de la Sopa de Mondongo</a></p>
+<h2 style="text-align: justify;"><span id="Comida_tipica_de_Colombia_8211_Ceviche_de_camarones">Comida típica de Colombia &#8211; Ceviche de camarones</span></h2>
+<p><img loading="lazy" class="aligncenter wp-image-1413 size-full" src="uploads/2016/10/Ceviche-camaron-colombiano-2.jpg" alt="cocina colombiana ceviche de camarones" width="600" height="450" srcset="https://www.#/wp-content/uploads/2016/10/Ceviche-camaron-colombiano-2.jpg 600w, https://www.#/wp-content/uploads/2016/10/Ceviche-camaron-colombiano-2-326x245.jpg 326w, https://www.#/wp-content/uploads/2016/10/Ceviche-camaron-colombiano-2-80x60.jpg 80w" sizes="(max-width: 600px) 100vw, 600px" /></p>
+<p style="text-align: justify;">El ceviche colombiano es un aperitivo o entrante muy popular entre la&nbsp;comida típica de Colombia. Se diferencia del ceviche peruano en que el ingrediente principal son los camarones en lugar de pescado y en que al igual que en el ceviche ecuatoriano se añade tomate ketchup o tomate heinz.</p>
+<p style="text-align: justify;">En general es un plato muy típico de la costa pacífico colombiana, de la zona del Valle del Cauca (Cali) por ejemplo. Aunque pocos restaurantes en Colombia no cuentan con un buen ceviche de camarones en su carta. Es parte de la&nbsp;comida típica de Colombia por derecho propio.</p>
+<p style="text-align: justify;">Ver la <a href="https://www.#/ceviche-de-camaron-colombiano/">receta del ceviche de camarones</a></p>
+<h2 style="text-align: justify;"><span id="Tamales_colombianos">Tamales colombianos</span></h2>
+<p><img loading="lazy" class="aligncenter wp-image-1414 size-full" src="uploads/2016/10/tamales-colombianos-2.jpg" alt="cocina colombiana tamales colombianos" width="600" height="406"></p>
+<p style="text-align: justify;">Otro aperitivo muy popular en Colombia. Hecho a base de masa de maiz rellena de carne de cerdo y de pollo con verduras, y envuelto en hojas de plátano, el tamal es una de las delicias colombianas más extendidas por el planeta.</p>
+<p style="text-align: justify;">En los tamales si que hay variedad, principalmente en los ingredientes de los rellenos. Así podemos encontrar tamales tolimences, santandereanos, antioqueños, de Córdoba, vallunos, de Nariño, de Cundinamarca, llaneros&#8230;</p>
+<p style="text-align: justify;">Ver la <a href="https://www.#/receta-tamal-valluno/">receta de los Tamales Colombianos</a></p>
+<h2 style="text-align: justify;"><span id="Empanadas">Empanadas</span></h2>
+<p><img loading="lazy" class="aligncenter wp-image-1415 size-full" src="uploads/2016/10/empanadas-colombianas-2.jpg" alt="cocina colombiana empanadas" width="600" height="371"></p>
+<p style="text-align: justify;">Las empanadas colombianas son parte de la cultura del país y de la comida típica de Colombia. En pocas calles de Colombia faltarán puestos ambulantes ofreciendo esta delicia cuya peculiaridad frente a otras empanadas es que la masa se hace a base de maíz. Los rellenos suelen ser de carne, pollo, o mixtos.</p>
+<p style="text-align: justify;">Cada región ha personalizado la receta, pero estemos donde estemos (Bogotá, Medellín, Cali, Cartagena&#8230;) si pedimos una empanada, será difícil que percibamos la diferencia.</p>
+<p style="text-align: justify;">Ver la <a href="https://www.#/receta-empanadas-vallunas/">receta de las empanadas</a></p>
+<h2 style="text-align: justify;"><span id="Comida_tipica_de_Colombia_8211_Posta_Negra">Comida típica de Colombia &#8211; Posta Negra</span></h2>
+<p><img loading="lazy" class="aligncenter size-full wp-image-7218" src="uploads/2019/06/Receta-de-Posta-Negra-cartagenera.jpg" alt="Receta de Posta Negra Cartagenera" width="600" height="400"></p>
+<p style="text-align: justify;">La Posta Negra es una popular receta de carne marinada con aspecto oscuro y con una mezcla de sabores e incluso un toque dulce. Es especialmente popular en la región caribe colombiana, y uno de los platos más típicos de ciudades como Cartagena, Barranquilla o Santa Marta</p>
+<p style="text-align: justify;">Ver la receta de la <a href="https://www.#/receta-de-posta-negra-cartagenera/">Posta Negra Cartagenera</a></p>
+<h2 style="text-align: justify;"><span id="Comida_tipica_de_Colombia_8211_Arroz_con_Coco">Comida típica de Colombia &#8211; Arroz con Coco</span></h2>
+<p><img loading="lazy" class="aligncenter size-full wp-image-7225" src="uploads/2019/06/Receta-de-Arroz-con-Coco-Colombiano.jpg" alt="Receta de Arroz con Coco Colombiano" width="600" height="315"></p>
+<p style="text-align: justify;">Seguimos con recetas típicas de la región Atlántico y de la ciudad de Cartagena. Aunque la verdad es que el arroz con coco se ha convertido en uno de los acompañamientos más populares de todo el país.</p>
+<p style="text-align: justify;">Ver la receta de el <a href="https://www.#/receta-de-arroz-con-coco-colombiano/">Arroz con Coco</a></p>
+<h2 style="text-align: justify;"><span id="Arepas">Arepas</span></h2>
+<p><img loading="lazy" class="aligncenter wp-image-1416 size-full" src="uploads/2016/10/arepas-2.jpg" alt="Comida típica colombiana arepas" width="600" height="361"></p>
+<p style="text-align: justify;">Las arepas son junto con las empanadas un protagonista de la&nbsp;comida típica de Colombia que podemos encontrar en cualquier sitio, incluso en puestos ambulantes. Su receta puede incluir el ingrediente que se desee, aunque las más típicas llevan queso y choclo (maíz tierno)</p>
+<p style="text-align: justify;">Sucede algo similar a las empanadas, hay regiones donde se consume más un tipo de arepa que otro. Pero en cualquier sitio podemos encontrar unas buenas arepas de queso.</p>
+<p style="text-align: justify;">Ver la <a href="https://www.#/receta-arepa-de-choclo/">receta de las arepas</a></p>
+<h2 style="text-align: justify;"><span id="Almojabanas_colombianas">Almojábanas colombianas</span></h2>
+<p><img loading="lazy" class="aligncenter wp-image-1417 size-full" src="uploads/2016/10/almojabanas-colombianas-2.jpg" alt="Comida típica colombiana almojabanas" width="600" height="402"></p>
+<p style="text-align: justify;">Son el dulce o producto de panadería más popular de Colombia. Hechas a base de harina y queso, consiguen una textura esponjosa que hacen de este alimento una delicia de la que disfrutar en cualquier momento del día. Aunque son especialmente típicas en el desayuno.</p>
+<p style="text-align: justify;">Es difícil saber de donde son más típicas las almojábanas. Aunque tienen especial fama las de La Guajira y las de Cundinamarca.</p>
+<p style="text-align: justify;">Ver la <a href="https://www.#/como-hacer-almojabanas-colombianas/">receta de las almojábanas colombianas.</a></p>
+<h2 style="text-align: justify;"><span id="Manjar_blanco">Manjar blanco</span></h2>
+<p><img loading="lazy" class="aligncenter wp-image-1418 size-full" src="uploads/2016/10/manjar-blanco-2.jpg" alt="postres colombianos manjar blanco" width="600" height="404"></p>
+<p style="text-align: justify;">Un delicioso postre hecho a base de leche, panela y arroz. Es parecido al Toffe o al Dulce de Leche que se preparan en otros continentes. Para quienes le guste el dulce no pueden dejar de probar este postre de la&nbsp;comida típica de Colombia cuando visiten&nbsp;el país.</p>
+<p style="text-align: justify;">Es especialmente típico en la región del Valle del Cauca (Cali). Aunque como casi todos los platos de esta lista, totalmente extendido a la cocina colombiana. Uno de los postres colombianos más populares.</p>
+<p style="text-align: justify;">Ver la <a href="https://www.#/receta-manjar-blanco-valluno/">receta del Manjar Blanco</a></p>
+<p style="text-align: justify;">Se habrán dado cuenta que la gran mayoría de estas <strong>recetas colombianas</strong> son muy parecidas e incluso se llaman igual a las que hacen en otros países de latinoamerica. Esto es debido a que casi todas nacen de la influencia española. A partir de ahí cada país las personalizó con sus ingredientes y dio&nbsp;su toque a la receta.</p>
+<style> ins.adsbygoogle { background: transparent !important; } </style><div class='yarpp yarpp-related yarpp-related-website yarpp-template-list'>
+
+<h3>También te interesa...:</h3><ol>
+<li><a href="https://www.#/receta-arroz-atollado/" rel="bookmark" title="Receta: Arroz Atollado">Receta: Arroz Atollado </a></li>
+<li><a href="https://www.#/como-hacer-arequipe-colombiano/" rel="bookmark" title="Receta: ¿ Cómo hacer arequipe colombiano?">Receta: ¿ Cómo hacer arequipe colombiano? </a></li>
+<li><a href="https://www.#/sopas-colombianas-populares/" rel="bookmark" title="Las sopas colombianas más populares">Las sopas colombianas más populares </a></li>
+</ol>
+</div>
+</div>
+<div class="entry-tags clearfix"><i class="fa fa-tag"></i><ul><li><a href="https://www.#/tag/cocina-colombiana/" rel="tag">cocina colombiana</a></li></ul></div> </article><nav class="mh-post-nav-wrap clearfix" role="navigation">
+<div class="mh-post-nav-prev mh-post-nav">
+<a href="https://www.#/ceviche-de-camaron-colombiano/" rel="prev">Previous article</a></div>
+<div class="mh-post-nav-next mh-post-nav">
+<a href="https://www.#/concierto-david-guetta-en-medellin/" rel="next">Next article</a></div>
+</nav>
+<div id="mh-comments" class="mh-comments-wrap">
+<h4 class="mh-section-title">
+1 Comment on Comida típica de Colombia: recetas colombianas </h4>
+<ol class="commentlist mh-comment-list">
+<li id="comment-1133" class="comment even thread-even depth-1 mh-comment-item">
+<article id="div-comment-1133" class="mh-comment-body">
+<footer class="mh-meta mh-comment-meta">
+<span class="vcard mh-comment-author">
+<figure class="mh-comment-gravatar">
+<img alt='' src='https://secure.gravatar.com/avatar/ced61dc98326f5a8f643896a27a16ac5?s=60&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/ced61dc98326f5a8f643896a27a16ac5?s=120&#038;d=mm&#038;r=g 2x' class='avatar avatar-60 photo' height='60' width='60' loading='lazy' /> </figure>
+<span class="fn">jorge lopez pineda</span>
+</span>
+<span class="mh-comment-meta-data">
+<a class="mh-comment-meta-date" href="index.html#comment-1133">
+8 marzo, 2018 a las 01:45 </a>
+</span>
+</footer>
+<div class="mh-comment-content">
+<p>excelente la cocina Colombiana,siempre que enseñemos hacerla con fórmula y procesos cuidadosos y el más olvidado el «Chontaduro»tortas,refrescos,chichas de este poder alimenticio dejando de lado malicioso de «AFRODISIACO»e infinidad de productos para la salud,jorge</p>
+</div>
+<div class="mh-meta mh-comment-meta-links"> </div>
+</article></li>
+</ol>
+</div> <p class="mh-section-title mh-no-comments">
+Los comentarios están cerrados. </p> </div>
+<aside class="mh-widget-col-1 mh-sidebar"><div id="text-3" class="mh-widget widget_text"> <div class="textwidget"><script type="rocketlazyloadscript" data-rocket-type="text/javascript">
+    google_ad_client = "ca-pub-7916202783210165";
+    google_ad_slot = "4596009033";
+    google_ad_width = 300;
+    google_ad_height = 600;
+</script>
+
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript" src="https://pagead2.googlesyndication.com/pagead/show_ads.js" defer>
+</script></div>
+</div>
+<div id="recent-posts-2" class="mh-widget widget_recent_entries">
+<h4 class="mh-widget-title"><span class="mh-widget-title-inner">Últimas noticias publicadas</span></h4>
+<ul>
+<li>
+<a href="https://www.#/uregencias-compensar-norte-de-santander-direccciones-telefono/">Urgencias Compensar Norte de Santander &#8211; Direcciones y Telefonos</a>
+<span class="post-date">3 octubre, 2021</span>
+</li>
+<li>
+<a href="https://www.#/urgencias-compensar-meta-direcciones-telefono-horario/">Urgencias Compensar Meta &#8211; Direcciones, Horarios y Teléfonos</a>
+<span class="post-date">20 septiembre, 2021</span>
+</li>
+<li>
+<a href="https://www.#/urgencias-compensar-valle-del-cauca-direcciones-telefono/">Urgencias Compensar Valle del Cauca &#8211; Direcciones y Teléfonos</a>
+<span class="post-date">24 agosto, 2021</span>
+</li>
+<li>
+<a href="https://www.#/urgencias-compensar-cali-direcciones-telefono-horario/">Urgencias Compensar Cali &#8211; Direcciones, Teléfonos y Horarios</a>
+<span class="post-date">15 agosto, 2021</span>
+</li>
+<li>
+<a href="https://www.#/urgencias-compensar-barranquilla-direcciones-telefono/">Urgencias Compensar Barranquilla &#8211; Direcciones y Teléfonos</a>
+<span class="post-date">4 agosto, 2021</span>
+</li>
+</ul>
+</div><div id="search-2" class="mh-widget widget_search"><form role="search" method="get" class="search-form" action="https://www.#/">
+<label>
+<span class="screen-reader-text">Buscar:</span>
+<input type="search" class="search-field" placeholder="Buscar &hellip;" value="" name="s" />
+</label>
+<input type="submit" class="search-submit" value="Buscar" />
+</form></div><div id="categories-2" class="mh-widget widget_categories"><h4 class="mh-widget-title"><span class="mh-widget-title-inner">Categorías</span></h4>
+<ul>
+<li class="cat-item cat-item-1131"><a href="https://www.#/category/bogota/">Bogotá</a>
+</li>
+<li class="cat-item cat-item-326"><a href="https://www.#/category/cali/">Cali</a>
+</li>
+<li class="cat-item cat-item-328"><a href="https://www.#/category/colombia/">Colombia</a>
+</li>
+<li class="cat-item cat-item-330"><a href="https://www.#/category/eventos/">Eventos</a>
+</li>
+<li class="cat-item cat-item-331"><a href="https://www.#/category/gastronomia/">Gastronomía</a>
+</li>
+<li class="cat-item cat-item-1132"><a href="https://www.#/category/medellin/">Medellín</a>
+</li>
+<li class="cat-item cat-item-1"><a href="https://www.#/category/noticias/">Noticias</a>
+</li>
+<li class="cat-item cat-item-337"><a href="https://www.#/category/viajes/">viajes</a>
+</li>
+</ul>
+</div><div id="recent-comments-2" class="mh-widget widget_recent_comments"><h4 class="mh-widget-title"><span class="mh-widget-title-inner">Comentarios recientes</span></h4><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link"><a href='http://Facebook' rel='external nofollow ugc' class='url'>Yulier Carolina andrade</a></span> en <a href="https://www.#/urgencias-compensar-en-cartagena-direcciones-telefono-horario/#comment-9139">Urgencias Compensar Cartagena &#8211; Direcciones, Teléfonos y Horarios</a></li><li class="recentcomments"><span class="comment-author-link"><a href='https://www.#' rel='external nofollow ugc' class='url'>Marta D</a></span> en <a href="https://www.#/telefono-de-migracion-colombia-numero/#comment-9110">Número de Teléfono de Migración Colombia</a></li><li class="recentcomments"><span class="comment-author-link">Esperanza Collazos</span> en <a href="https://www.#/telefono-de-migracion-colombia-numero/#comment-9109">Número de Teléfono de Migración Colombia</a></li><li class="recentcomments"><span class="comment-author-link">olga</span> en <a href="https://www.#/tiendas-directv-en-cali-direcciones-horarios-y-telefonos/#comment-9108">Tiendas Directv en Cali &#8211; Direcciones, Horarios y Teléfonos</a></li><li class="recentcomments"><span class="comment-author-link">ana julieth moreno cupido</span> en <a href="https://www.#/numero-de-telefono-de-caja-social/#comment-9104">Número de Telefono de Caja Social</a></li></ul></div><div id="text-5" class="mh-widget widget_text"> <div class="textwidget"><p>Nuestra Red:</p>
+<p><a href="https://www.mejoress.com/en/">Mejoress</a></p>
+<p><a href="https://www.brujuleamex.com/">Brujuleamex</a></p>
+<p><a href="https://www.encuentracerca.es/">Encuentracerca</a></p>
+</div>
+</div></aside></div>
+<a href="index.html#top"><img width="40" height="40" src="uploads/2016/06/Ir-arriba.png" title="Ir arriba" style="position: fixed; bottom: 10px; right: 2%;" /></a>
+<footer class="mh-footer">
+<div class="mh-container mh-container-inner mh-footer-widgets mh-row clearfix">
+<div class="mh-col-1-4 mh-widget-col-1 mh-footer-area mh-footer-3">
+<div id="pages-2" class="mh-footer-widget widget_pages"><h6 class="mh-widget-title mh-footer-widget-title"><span class="mh-widget-title-inner mh-footer-widget-title-inner">Páginas</span></h6>
+<ul>
+<li class="page_item page-item-7948"><a href="https://www.#/aviso-legal/">Aviso Legal</a></li>
+<li class="page_item page-item-455"><a href="https://www.#/contacto/">Contáctenos</a></li>
+<li class="page_item page-item-505"><a href="https://www.#/cali/">Historia de Cali</a></li>
+<li class="page_item page-item-7949"><a href="https://www.#/politica-de-cookies/">Política de Cookies</a></li>
+<li class="page_item page-item-7950"><a href="https://www.#/politica-de-privacidad/">Política de Privacidad</a></li>
+<li class="page_item page-item-458"><a href="https://www.#/nosotros/">Sobre nosotros</a></li>
+</ul>
+</div> </div>
+<div class="mh-col-1-4 mh-widget-col-1 mh-footer-area mh-footer-4">
+<div id="text-4" class="mh-footer-widget widget_text"> <div class="textwidget"><p><a href="https://www.dmca.com/Protection/Status.aspx?ID=ed4a248f-2d23-4a27-8c84-a2751bdc2308" title="DMCA.com Protection Status" class="dmca-badge"> <img src="https://images.dmca.com/Badges/dmca_protected_sml_120n.png?ID=ed4a248f-2d23-4a27-8c84-a2751bdc2308" alt="DMCA.com Protection Status" /></a> <script data-minify="1" src="cache/min/1/Badges/DMCABadgeHelper.min.js@ver=1621429569" defer> </script></p>
+</div>
+</div> </div>
+</div>
+</footer>
+<div class="mh-copyright-wrap">
+<div class="mh-container mh-container-inner clearfix">
+<div align="right">Ofrecido por:<a href="http://www.solucionpaginasweb.es"> Diseño web Madrid</a></div>
+<p class="mh-copyright">Copyright &copy; 2021 | <a href="https://www.#/">Viviendo Cali</a> - <a href="https://www.#/" rel="dofollow">Cali, Valle del Cauca y Colombia</a></p>
+</div>
+<div align="center"><span style="color: #f5f5f5;">Todos los derechos reservados</span></div>
+</div>
+</div>
+<script type='text/javascript' id='toc-front-js-extra'>
+/* <![CDATA[ */
+var tocplus = {"visibility_show":"show","visibility_hide":"hide","width":"Auto"};
+var tocplus = {"visibility_show":"show","visibility_hide":"hide","width":"Auto"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='plugins/table-of-contents-plus/front.min.js@ver=2106' id='toc-front-js' defer></script>
+<script type='text/javascript' id='rocket-browser-checker-js-after'>
+"use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+</script>
+<script type='text/javascript' id='rocket-preload-links-js-extra'>
+/* <![CDATA[ */
+var RocketPreloadLinksConfig = {"excludeUris":"\/(.+\/)?feed\/?.+\/?|\/(?:.+\/)?embed\/|\/(index\\.php\/)?wp\\-json(\/.*|$)|\/wp-admin\/|\/logout\/|\/wp-login.php","usesTrailingSlash":"1","imageExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif","fileExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|php|pdf|html|htm","siteUrl":"https:\/\/www.#","onHoverDelay":"100","rateThrottle":"3"};
+/* ]]> */
+</script>
+<script type='text/javascript' id='rocket-preload-links-js-after'>
+(function() {
+"use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+}());
+</script>
+<script type='text/javascript' src='js/wp-embed.min.js@ver=5.5.6' id='wp-embed-js' defer></script>
+<script>window.lazyLoadOptions={elements_selector:"iframe[data-lazy-src]",data_src:"lazy-src",data_srcset:"lazy-srcset",data_sizes:"lazy-sizes",class_loading:"lazyloading",class_loaded:"lazyloaded",threshold:300,callback_loaded:function(element){if(element.tagName==="IFRAME"&&element.dataset.rocketLazyload=="fitvidscompatible"){if(element.classList.contains("lazyloaded")){if(typeof window.jQuery!="undefined"){if(jQuery.fn.fitVids){jQuery(element).parent().fitVids()}}}}}};window.addEventListener('LazyLoad::Initialized',function(e){var lazyLoadInstance=e.detail.instance;if(window.MutationObserver){var observer=new MutationObserver(function(mutations){var image_count=0;var iframe_count=0;var rocketlazy_count=0;mutations.forEach(function(mutation){for(i=0;i<mutation.addedNodes.length;i++){if(typeof mutation.addedNodes[i].getElementsByTagName!=='function'){continue}
+if(typeof mutation.addedNodes[i].getElementsByClassName!=='function'){continue}
+images=mutation.addedNodes[i].getElementsByTagName('img');is_image=mutation.addedNodes[i].tagName=="IMG";iframes=mutation.addedNodes[i].getElementsByTagName('iframe');is_iframe=mutation.addedNodes[i].tagName=="IFRAME";rocket_lazy=mutation.addedNodes[i].getElementsByClassName('rocket-lazyload');image_count+=images.length;iframe_count+=iframes.length;rocketlazy_count+=rocket_lazy.length;if(is_image){image_count+=1}
+if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_count>0){lazyLoadInstance.update()}});var b=document.getElementsByTagName("body")[0];var config={childList:!0,subtree:!0};observer.observe(b,config)}},!1)</script><script data-no-minify="1" async src="plugins/wp-rocket/assets/js/lazyload/16.1/lazyload.min.js"></script><script>function lazyLoadThumb(e){var t='<img src="https://i.ytimg.com/vi/ID/hqdefault.jpg" alt="" width="480" height="360">',a='<div class="play"></div>';return t.replace("ID",e)+a}function lazyLoadYoutubeIframe(){var e=document.createElement("iframe"),t="ID?autoplay=1";t+=0===this.dataset.query.length?'':'&'+this.dataset.query;e.setAttribute("src",t.replace("ID",this.dataset.src)),e.setAttribute("frameborder","0"),e.setAttribute("allowfullscreen","1"),e.setAttribute("allow", "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"),this.parentNode.replaceChild(e,this)}document.addEventListener("DOMContentLoaded",function(){var e,t,a=document.getElementsByClassName("rll-youtube-player");for(t=0;t<a.length;t++)e=document.createElement("div"),e.setAttribute("data-id",a[t].dataset.id),e.setAttribute("data-query", a[t].dataset.query),e.setAttribute("data-src", a[t].dataset.src),e.innerHTML=lazyLoadThumb(a[t].dataset.id),e.onclick=lazyLoadYoutubeIframe,a[t].appendChild(e)});</script><script type="rocketlazyloadscript">"use strict";var wprRemoveCPCSS=function wprRemoveCPCSS(){var elem;document.querySelector('link[data-rocket-async="style"][rel="preload"]')?setTimeout(wprRemoveCPCSS,200):(elem=document.getElementById("rocket-critical-css"))&&"remove"in elem&&elem.remove()};window.addEventListener?window.addEventListener("load",wprRemoveCPCSS):window.attachEvent&&window.attachEvent("onload",wprRemoveCPCSS);</script><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open%20Sans%3A400%2C400italic%2C700%2C600&#038;display=swap" /><link rel="stylesheet" href="cache/min/1/3971a9c68f23e9cfd725ee4cad5f2bc7.css" media="all" data-minify="1" /></noscript></body>
+</html>
